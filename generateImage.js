@@ -1,6 +1,6 @@
 const Canvas = require("canvas")
-const Discord = require("dicsord.js")
-const background = "https://imgur.com/a/PDbXH47"
+const Discord = require("discord.js")
+const background = "https://i.imgur.com/cNjW9re.jpeg"
 
 const dim = {
     height: 675,
@@ -16,9 +16,10 @@ const av = {
 const generateImage = async (member) => {
     let username = member.user.username
     let discrim = member.user.discriminator
-    let avatarURL = member.user.displayAvatarURL({fomrat: "png", dynamic: false, size: av.size})
+    let avatarURL = member.user.displayAvatarURL();
+    let avatarURLPNG = avatarURL.replace(/webp/g, "png")
     
-    const canvas = canvas.createCanvas(dim.witdth, dim.height)
+    const canvas = Canvas.createCanvas(dim.width, dim.height)
     const ctx = canvas.getContext("2d")
 
     // draw in the background
@@ -29,7 +30,7 @@ const generateImage = async (member) => {
     ctx.fillStyle = "rgba(0,0,0,0.8)"
     ctx.fillRect(dim.margine, dim.margin, dim.width - 2 * dim.margin, dim.height - 2 * dim.margin)
 
-    const avimg = await Canvas.loadImage(avatarURL)
+    const avimg = await Canvas.loadImage(avatarURLPNG)
     ctx.save()
 
     ctx.beginPath()
@@ -40,8 +41,8 @@ const generateImage = async (member) => {
     ctx.drawImage(avimg, av.x, av.y)
     ctx.restore()
 
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), "Welcome.png")
-    return attachment
+    console.log(canvas.toBuffer())
+    return canvas.toBuffer()
 }
 
 module.exports = generateImage
