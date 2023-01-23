@@ -14,6 +14,11 @@ const client = new Client({
 
 client.on('ready', () => {
     console.log('Bot Protocolls Engaged: Subset Directory Activated.')
+    
+    const discordServer = client.guilds.cache.get('846496223673581598');
+    discordServer.channels.cache.forEach((channel) => {
+        console.log('|', channel.name, '=>', channel.id, '|');
+    });
 })
 
 const welcomeChannelId = "821610313299525650"
