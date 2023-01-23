@@ -16,7 +16,7 @@ client.on('ready', () => {
     console.log('Bot Protocolls Engaged: Subset Directory Activated.')
 })
 
-const welcomeChannelId = "889256349010104381"
+const welcomeChannelId = "821610313299525650"
 
 client.on("guildMemberAdd", async (member) => {
     const img = await generateImage(member)
