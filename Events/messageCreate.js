@@ -12,7 +12,7 @@ module.exports = {
        if (!message.content.startsWith(prefix))
        return
 
-       const args = message.content.slice(prefix.legnth).trim().split(/ +/g)
+       const args = message.content.slice(prefix.length).trim().split(/ +/g)
        const cmdstr = args.shift().toLowerCase()
 
        let command = client.commands.get(cmdstr)
