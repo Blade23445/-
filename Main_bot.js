@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits } = require('discord.js')
 require('dotenv/config')
 
-const generateImage = require("./generateImage")
+const generateImage = require("./generateImage.js")
 
 const client = new Client({
     intents: [
@@ -12,11 +12,33 @@ const client = new Client({
     ]
 })
 
+let bot = {
+  client,
+  prefix: "n.",
+  owners: ["566907143278559232"]
+}
+
+client.commands = new Map()
+client.events = new Map()
+
+client.loadEvents = (bot, reload) => require("./handlers/events")(bot, reload)
+client.loadCommands = (bot, reload) => require("./handlers/commands")(bot, reload)
+
+client.loadEvents(bot, false)
+client.loadCommands(bot, false)
+
+module.exports = bot
+
 client.on('ready', () => {
     console.log('Bot Protocolls Engaged: Subset Directory Activated.')
+
+    const discordServer = client.guilds.cache.get('846496223673581598');
+    discordServer.channels.cache.forEach((channel) => {
+        console.log('|', channel.name, '=>', channel.id, '|');
+    });
 })
 
-const welcomeChannelId = "821610313299525650"
+const welcomeChannelId = "859197723604418570"
 
 client.on("guildMemberAdd", async (member) => {
     const img = await generateImage(member)
@@ -30,7 +52,7 @@ client.on('messageCreate', message => {
   if (message.content === '/ping') {
       message.channel.send('pong!')
   } else if (message.content === '/Fuck') {
-    message.channel.send('You <@729374175822610562>!')
+    message.channel.send('You <@460438904588468264>!')
   }
 })
 
