@@ -29,14 +29,7 @@ client.loadCommands(bot, false)
 
 module.exports = bot
 
-client.on('ready', () => {
-    console.log('Bot Protocolls Engaged: Subset Directory Activated.')
 
-    const discordServer = client.guilds.cache.get('846496223673581598');
-    discordServer.channels.cache.forEach((channel) => {
-        console.log('|', channel.name, '=>', channel.id, '|');
-    });
-})
 
 const welcomeChannelId = "859197723604418570"
 
@@ -46,27 +39,32 @@ client.on("guildMemberAdd", async (member) => {
        content: `<@${member.id}> The Council Welcomes You`,
        files: [img]
     })
-  })
 
+})
 
-client.slashcommands = new Discord.collection()
+const guildId = "821219991973003274"
+
+client.slashcommands = new Map()
 
 client.loadSlashCommands = (bot, reload) => require("./handlers/slashcommands")(bot, reload)
 client.loadSlashCommands(bot, false)
 
-client.on("interactionCreate", (interaction) => {
-    if (!interaction.isCommand()) return
-    if (!interaction.inGuild()) return interaction.reply("This command can only be used in a server")
 
-  const slashcmd = client.slashcommands.get(interaction.commandName)
+client.on('ready', async () => {
+    const guild = client.guilds.cache.get(guildId)
+    if(!guild)
+        return console.error("Target guild not found")
 
-  if (!slashcmd) return interaction.reply("Invalid slash command")
-
-  if (slashcmd.perms && !interaction.member.permissions.has(slashcmd.perm))
-      return interaction.reply("Permission access denied")
-
-  slashcmd.run(client, interaction)
-
+        await guild.commands.set([...client.slashcommands.values()])
+        console.log(`Successfully loaded in ${client.slashcommands.size}`)
+        process.exit(0)
 })
+    console.log('Bot Protocolls Engaged: Subset Directory Activated.')
+
+    const discordServer = client.guilds.cache.get('846496223673581598');
+    discordServer.channels.cache.forEach((channel) => {
+        console.log('|', channel.name, '=>', channel.id, '|');
+    });
+
 
 client.login(process.env.TOKEN)
