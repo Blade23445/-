@@ -48,8 +48,8 @@ client.on("guildMemberAdd", async (member) => {
     })
   })
 
-
-client.slashcommands = new Discord.collection()
+  const { Collection } = require('discord.js');
+  client.slashcommands = new Collection();
 
 client.loadSlashCommands = (bot, reload) => require("./handlers/slashcommands")(bot, reload)
 client.loadSlashCommands(bot, false)

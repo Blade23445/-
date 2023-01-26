@@ -14,7 +14,7 @@ const client = new Client({
 
 let bot = {
   client,
-  prefix: "n.",
+  prefix: "/",
   owners: ["566907143278559232"]
 }
 
@@ -50,21 +50,20 @@ client.loadSlashCommands = (bot, reload) => require("./handlers/slashcommands")(
 client.loadSlashCommands(bot, false)
 
 
-client.on('ready', async () => {
+client.on('ready', () => {
     const guild = client.guilds.cache.get(guildId)
     if(!guild)
         return console.error("Target guild not found")
 
-        await guild.commands.set([...client.slashcommands.values()])
+        client.commands.set([client.slashcommands.values()])
         console.log(`Successfully loaded in ${client.slashcommands.size}`)
-        process.exit(0)
+
 })
     console.log('Bot Protocolls Engaged: Subset Directory Activated.')
 
-    const discordServer = client.guilds.cache.get('846496223673581598');
-    discordServer.channels.cache.forEach((channel) => {
-        console.log('|', channel.name, '=>', channel.id, '|');
-    });
-
+    client.on('ready', async () => {
+        const guild = client.guilds.cache.get('846496223673581598');
+        console.log(guildId.name);
+      });
 
 client.login(process.env.TOKEN)
